@@ -4,8 +4,9 @@ import speech_recognition as sr
 import wikipedia
 import openai
 import os
-import sys
 import webbrowser
+from pygame import mixer
+import random
 
 openai.api_key=os.environ["OPENAI_API_KEY"]
 
@@ -82,14 +83,34 @@ def browser_search(search):
     opening=f"www.{search}.com"        # youtube will open in browser as "www.youtube.com"
     return opening
 
-def play_music():
+class play_music:
     '''
-    This function is used to play the music for user from the music directory.
+    This class is used to play the music for user from the music directory.
     '''
-    music_dir="C:\\Users\\Vikas Pandey\\Music"
-    songs=os.listdir(music_dir)
-    print(songs[0])
-    return os.startfile(os.path.join(music_dir,songs[0]))
+    # playing music using os module but it shows an error in system
+    # music_dir="C:\\Users\\Vikas Pandey\\Music"
+    # songs=os.listdir(music_dir)
+    # print(songs[0])
+    # return os.startfile(os.path.join(music_dir,songs[0]))
+
+    # playing music using mixer module
+    def current_song():
+        music_dir="C:\\Users\\Vikas Pandey\\Music"
+        os.chdir(music_dir)
+        music=random.choice(os.listdir())
+        mixer.init()
+        speak(f"plying {music}")
+        mixer.music.load(music)
+        mixer.music.play()
+    def next_song():
+        music=random.choice(os.listdir())
+        mixer.music.load(music)
+        return mixer.music.play()
+    def pause_song():
+        return mixer.music.pause()
+    def stop_song():
+        return mixer.music.stop()
+
 
 if __name__=='__main__':
     speak("Welcome back sir, How can I assist you?")
@@ -110,7 +131,7 @@ if __name__=='__main__':
             except Exception:
                 speak("can't find it on wikipedia!")
             
-        elif "tell" in query:
+        elif "jarvis" in query:
             speak("Sure sir wait a while.")
             results=gpt_searching(query)
             print(results)
@@ -118,12 +139,31 @@ if __name__=='__main__':
             speak(results)
         elif "exit" in query:
             speak("Goodbye sir.")
-            sys.exit()
+            exit()
         elif "in browser" in query:
             url=browser_search(query)
             webbrowser.open(url)
-        elif "play music" in query:
+        elif "play song" in query:
            speak("Playing the song")
-           play_music()
-           
-        
+           play_music.current_song()
+        elif "play next song" in query:
+            play_music.next_song()
+        elif "pause song" in query:
+            play_music.pause_song()
+        elif "stop song" in query:
+            play_music.stop_song()
+            os.chdir("C:\\Users\\Vikas Pandey\\Desktop\\Python\\Projects")
+        elif "time" in query:
+            strTime=datetime.datetime.now().strftime("%H:%M:%S")
+            speak(f"sir the time is {strTime}")
+        elif "open vs code" in  query:
+            app_path="C:\\Users\\Vikas Pandey\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Visual Studio Code\\Visual Studio Code.lnk"
+            os.startfile(app_path)
+        elif "browser" in query:
+            app_path="C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Brave.lnk"
+            os.startfile(app_path)
+        elif "command prompt" in query:
+            app_path="C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Git\Git Bash.lnk"
+            os.startfile(app_path)
+        else:
+            print("sorry sir, I can't understand")

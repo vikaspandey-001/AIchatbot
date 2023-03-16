@@ -7,6 +7,9 @@ import os
 import webbrowser
 from pygame import mixer
 import random
+import pywhatkit
+import imutils
+import cv2
 
 openai.api_key=os.environ["OPENAI_API_KEY"]
 
@@ -50,8 +53,9 @@ def lisening_user():
     except Exception as e:
         # print(e)
         print("say that again please!")
-        return"None"
+        return "None"
     return query
+
 
 def wiki(query):
     '''
@@ -113,6 +117,10 @@ class play_music:
 
 
 if __name__=='__main__':
+    # os.startfile("jarvis.mp4")
+    img=cv2.imread("jarvis.png")
+    img_rez=imutils.resize(img,width=2000)
+    cv2.imshow("Jarvis",img_rez)
     speak("Welcome back sir, How can I assist you?")
     while True:
         query=lisening_user().lower()
@@ -135,10 +143,11 @@ if __name__=='__main__':
             speak("Sure sir wait a while.")
             results=gpt_searching(query)
             print(results)
-            speak("according to openai")
             speak(results)
         elif "exit" in query:
             speak("Goodbye sir.")
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
             exit()
         elif "in browser" in query:
             url=browser_search(query)
@@ -154,7 +163,7 @@ if __name__=='__main__':
             play_music.stop_song()
             os.chdir("C:\\Users\\Vikas Pandey\\Desktop\\Python\\Projects")
         elif "time" in query:
-            strTime=datetime.datetime.now().strftime("%H:%M:%S")
+            strTime=datetime.now().strftime("%H:%M:%S")
             speak(f"sir the time is {strTime}")
         elif "open vs code" in  query:
             app_path="C:\\Users\\Vikas Pandey\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Visual Studio Code\\Visual Studio Code.lnk"
@@ -162,8 +171,15 @@ if __name__=='__main__':
         elif "browser" in query:
             app_path="C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Brave.lnk"
             os.startfile(app_path)
-        elif "command prompt" in query:
-            app_path="C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Git\Git Bash.lnk"
+        elif "open command prompt" in query:
+            app_path="C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Git\\Git Bash.lnk"
             os.startfile(app_path)
+        elif "open file manager" in query:
+            app_path="C:\\Users\\Vikas Pandey\\Desktop"
+            os.startfile(app_path)
+        elif "whatsapp" in query:
+            pywhatkit.sendwhatmsg("+916362374373","Hello there, This side Vikas Pandey",int(datetime.now().hour),int(datetime.now().minute),True,2)
         else:
-            print("sorry sir, I can't understand")
+            results=gpt_searching(query)
+            print(results)
+            speak(results)

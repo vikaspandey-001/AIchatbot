@@ -8,10 +8,11 @@ import webbrowser
 from pygame import mixer
 import random
 import pywhatkit
-import imutils
+# import imutils
 import cv2
 
-openai.api_key=os.environ["OPENAI_API_KEY"]
+# openai.api_key=os.environ.get("OPENAI_API_KEY")
+openai.api_key = "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"
 
 engine=pyttsx3.init('sapi5')
 voices=engine.getProperty('voices')
@@ -92,14 +93,14 @@ class play_music:
     This class is used to play the music for user from the music directory.
     '''
     # playing music using os module but it shows an error in system
-    # music_dir="C:\\Users\\Vikas Pandey\\Music"
+    # music_dir="C:\\Users\\vp587\\Music"
     # songs=os.listdir(music_dir)
     # print(songs[0])
     # return os.startfile(os.path.join(music_dir,songs[0]))
 
     # playing music using mixer module
     def current_song():
-        music_dir="C:\\Users\\Vikas Pandey\\Music"
+        music_dir="C:\\Users\\vp587\\Music"
         os.chdir(music_dir)
         music=random.choice(os.listdir())
         mixer.init()
@@ -118,9 +119,9 @@ class play_music:
 
 if __name__=='__main__':
     # os.startfile("jarvis.mp4")
-    img=cv2.imread("jarvis.png")
-    img_rez=imutils.resize(img,width=2000)
-    cv2.imshow("Jarvis",img_rez)
+    # img=cv2.imread("jarvis.png")
+    # img_rez=imutils.resize(img,width=2000)
+    # cv2.imshow("Jarvis",img_rez)
     speak("Welcome back sir, How can I assist you?")
     while True:
         query=lisening_user().lower()
@@ -161,12 +162,12 @@ if __name__=='__main__':
             play_music.pause_song()
         elif "stop song" in query:
             play_music.stop_song()
-            os.chdir("C:\\Users\\Vikas Pandey\\Desktop\\Python\\Projects")
+            os.chdir("C:\\Users\\vp587\\Desktop\\Python\\Projects")
         elif "time" in query:
             strTime=datetime.now().strftime("%H:%M:%S")
             speak(f"sir the time is {strTime}")
         elif "open vs code" in  query:
-            app_path="C:\\Users\\Vikas Pandey\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Visual Studio Code\\Visual Studio Code.lnk"
+            app_path="C:\\Users\\vp587\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Visual Studio Code\\Visual Studio Code.lnk"
             os.startfile(app_path)
         elif "browser" in query:
             app_path="C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Brave.lnk"
@@ -175,10 +176,10 @@ if __name__=='__main__':
             app_path="C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Git\\Git Bash.lnk"
             os.startfile(app_path)
         elif "open file manager" in query:
-            app_path="C:\\Users\\Vikas Pandey\\Desktop"
+            app_path="C:\\Users\\vp587\\Desktop"
             os.startfile(app_path)
         elif "whatsapp" in query:
-            pywhatkit.sendwhatmsg("+916362374373","Hello there, This side Vikas Pandey",int(datetime.now().hour),int(datetime.now().minute),True,2)
+            pywhatkit.sendwhatmsg("+916362374373","Hello there, This side vp587",int(datetime.now().hour),int(datetime.now().minute),True,2)
         else:
             results=gpt_searching(query)
             print(results)
